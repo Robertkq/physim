@@ -1,0 +1,8 @@
+# Directories
+.vscode/
+# Files
+
+# Extensions
+*.o
+*.exe
+*.elf
