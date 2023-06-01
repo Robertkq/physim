@@ -17,7 +17,7 @@ public:
 
 private:
     void drawObjects();
-    void calculateObjects();
+    void updateObjects(float deltaTime);
     void mainMenu();
 
     uint16_t m_width;

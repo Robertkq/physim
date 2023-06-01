@@ -18,6 +18,7 @@ physim::~physim()
 
 void physim::run()
 {
+    sf::Clock clock;
     while (m_window.isOpen())
     {
         sf::Event event;
@@ -35,16 +36,24 @@ void physim::run()
                 {
                     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
                     std::cout << "Left-click at (" << mousePosition.x << ", " << mousePosition.y << ")" << std::endl;
-                    m_entities.push_back(std::make_unique<Shape<sf::CircleShape, DynamicBody>>(100.f));
+                    static int selector = 0;
+                    if(selector % 2 == 0)
+                        m_entities.push_back(std::make_unique<Shape<sf::RectangleShape, DynamicBody>>(sf::Vector2f{100, 100}));
+                    else
+                        m_entities.push_back(std::make_unique<Shape<sf::CircleShape, DynamicBody>>(100.f));
+                    ++selector;
+                    m_entities.back()->setPosition({mousePosition.x, mousePosition.y});
+                    m_entities.back()->applyForce({1000.f, 100.f});
                 }
             }
         }
 
         ImGui::SFML::Update(m_window, sf::seconds(1.f / 60.f));
 
+        float deltaTime = clock.restart().asSeconds();
         m_window.clear();
 
-        calculateObjects();
+        updateObjects(deltaTime);
         drawObjects();
         mainMenu();
 
@@ -62,11 +71,11 @@ void physim::drawObjects()
     }
 }
 
-void physim::calculateObjects()
+void physim::updateObjects(float deltaTime)
 {
     for(auto& entity : m_entities)
     {
-        entity->applyPhysics();
+        entity->update(deltaTime);
     }
 }
 
@@ -75,8 +84,7 @@ void physim::mainMenu()
     
     ImGui::ShowDemoWindow();
     ImGui::SetNextWindowSize({(float)m_width, (float)m_height});
-    ImGui::Begin("Physim", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-    
+    bool collapsed = ImGui::Begin("Physim", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     ImGui::End();
 }
 
