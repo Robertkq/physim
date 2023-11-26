@@ -174,7 +174,7 @@ void Shape<sfShapeType, BodyType>::move(const sf::Vector2f& velocity, float delt
 }
 
 template<typename sfShapeType, typename BodyType>
-void Shape<sfShapeType, BodyType>::nextPosition(const sf::Vector2f& velocity, float deltaTime)
+sf::Vector2f Shape<sfShapeType, BodyType>::nextPosition(const sf::Vector2f& velocity, float deltaTime)
 {
     sf::Vector2f pos = m_shape.getPosition();
     pos += velocity * deltaTime;

@@ -30,7 +30,6 @@ private:
 
     UIManager m_UIManager;
 
-    Collider m_collider;
     std::vector<std::unique_ptr<Entity>> m_entities;
 };
 
