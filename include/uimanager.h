@@ -2,6 +2,7 @@
 #define PHYSIM_UIMANAGER_H
 
 #include "common.h"
+#include "types.h"
 
 namespace kq
 {
@@ -13,7 +14,7 @@ public:
 
     void toggle();
     bool isActive() const;
-    void show();
+    void show(std::vector<std::shared_ptr<Entity>>& entities);
 
     void play();
     void pause();
@@ -28,6 +29,8 @@ public:
 private:
 
     void editPanel();
+    void listPanel(std::vector<std::shared_ptr<Entity>>& entities);
+    void objectPanel(std::shared_ptr<Entity> entity);
 
     bool m_toggle;
     objectType m_type;

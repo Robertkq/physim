@@ -94,7 +94,7 @@ void physim::mainMenu()
     
     if(m_UIManager.isActive())
     {
-        m_UIManager.show();
+        m_UIManager.show(m_entities);
         ImGui::ShowDemoWindow();
     }
 }
@@ -109,11 +109,11 @@ void physim::createObject(objectType type, float rotation, float radius, sf::Vec
 
     if(type == objectType::circle)
     {
-        m_entities.push_back(std::make_unique<Shape<sf::CircleShape, DynamicBody>>(radius));
+        m_entities.push_back(std::make_shared<Shape<sf::CircleShape, DynamicBody>>(radius));
     }
     if(type == objectType::square)
     {
-        m_entities.push_back(std::make_unique<Shape<sf::RectangleShape, DynamicBody>>(size));
+        m_entities.push_back(std::make_shared<Shape<sf::RectangleShape, DynamicBody>>(size));
     }
     
     m_entities.back()->setPosition(mousePosF);

@@ -1,4 +1,5 @@
 #include "uimanager.h"
+#include "types.h"
 
 namespace kq {
 
@@ -18,13 +19,10 @@ bool UIManager::isActive() const
     return m_toggle;
 }
 
-void UIManager::show()
+void UIManager::show(std::vector<std::shared_ptr<Entity>>& entities)
 {
-    ImGui::Begin("UI");
-    
     editPanel();
-
-    ImGui::End();
+    listPanel(entities);
 }
 
 void UIManager::play()
@@ -55,6 +53,7 @@ sf::Vector2f UIManager::getVelocity() {return m_velocity; }
 
 void UIManager::editPanel()
 {
+    ImGui::Begin("Edit Panel");
     if(isPlaying())
     {
         if(ImGui::Button("Pause"))
@@ -96,8 +95,51 @@ void UIManager::editPanel()
     {
 
     }
-        
+    ImGui::End();
     
 }
 
+void UIManager::listPanel(std::vector<std::shared_ptr<Entity>>& entities)
+{
+    ImGui::Begin("List Panel");
+
+    static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable;
+    const float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
+    ImVec2 outer_size = ImVec2(0.0f, TEXT_BASE_HEIGHT * 8);
+    if (ImGui::BeginTable("list_cars", 6, flags, outer_size))
+    {
+        ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
+        ImGui::TableSetupColumn("Index", ImGuiTableColumnFlags_None);
+        ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_None);
+        ImGui::TableSetupColumn("Color", ImGuiTableColumnFlags_None);
+        ImGui::TableSetupColumn("Tag", ImGuiTableColumnFlags_None);
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_None);
+        ImGui::TableHeadersRow();
+
+        for (uint32_t i = 0; i < entities.size(); ++i)
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text(itos(i).data());
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("hi");
+            ImGui::TableSetColumnIndex(2);
+            ImGui::Text("hii");
+            ImGui::TableSetColumnIndex(3);
+            ImGui::Text("hi");
+            ImGui::TableSetColumnIndex(4);
+            ImGui::Text("bye");
+        }
+        
+        ImGui::EndTable();
+    }
+
+    ImGui::End();
 }
+
+void UIManager::objectPanel(std::shared_ptr<Entity>)
+{
+
+}
+
+} // namespace kq

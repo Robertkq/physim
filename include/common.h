@@ -19,6 +19,27 @@
 namespace kq
 {
 
+inline std::string itos(int conv)
+{
+    if(conv == 0)
+        return "0";
+    std::string ret;
+    bool negative = false;
+    if(conv < 0)
+    {
+        negative = true;
+        conv = conv * -1;
+    }
+    while(conv != 0)
+    {
+        ret.insert(ret.begin(), 48 + conv % 10);
+        conv /= 10;
+    }
+    if(negative)
+        ret.insert(ret.begin(), '-');
+    return ret;
+}
+
     enum class objectType : int
     {
         circle = 0,

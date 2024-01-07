@@ -30,7 +30,7 @@ private:
 
     UIManager m_UIManager;
 
-    std::vector<std::unique_ptr<Entity>> m_entities;
+    std::vector<std::shared_ptr<Entity>> m_entities;
 };
 
 } // namespace kq

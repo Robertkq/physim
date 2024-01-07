@@ -23,6 +23,8 @@ public:
     virtual void update(float deltaTime) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual void setPosition(const sf::Vector2f& pos) = 0;
+    virtual void setColor(const sf::Color& color) = 0;
+    virtual sf::Color getColor() = 0;
 
 protected:
     float m_mass;
@@ -46,6 +48,8 @@ public:
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) override;
     void setPosition(const sf::Vector2f& pos) override;
+    void setColor(const sf::Color& color) override;
+    sf::Color getColor() override;
 
     sfShapeType& getShape();
     bool& getNorth();
@@ -55,6 +59,7 @@ public:
 
 
 protected:
+    sf::Color m_color;
     sfShapeType m_shape;
     bool m_north;
     bool m_east;
@@ -141,7 +146,7 @@ void DynamicBody::applyForce(Shape<sfShapeType, DynamicBody>& shape, const sf::V
 
 template<typename sfShapeType, typename BodyType>
 Shape<sfShapeType, BodyType>::Shape()
-    : Entity(), BodyType(), m_shape(), m_north(false), m_east(false), m_south(false), m_west(false)
+    : Entity(), BodyType(), m_color(), m_shape(), m_north(false), m_east(false), m_south(false), m_west(false)
 {
     // Constructor implementation
 }
@@ -155,7 +160,7 @@ Shape<sfShapeType, BodyType>::~Shape()
 template<typename sfShapeType, typename BodyType>
 template<typename... Args>
 Shape<sfShapeType, BodyType>::Shape(Args&&... args)
-    : Entity(), BodyType(), m_shape(std::forward<Args>(args)...)
+    : Entity(), BodyType(), m_color(), m_shape(std::forward<Args>(args)...), m_north(false), m_east(false), m_south(false), m_west(false)
 {
 
 }
@@ -203,6 +208,18 @@ template<typename sfShapeType, typename BodyType>
 void Shape<sfShapeType, BodyType>::setPosition(const sf::Vector2f& pos)
 {
     m_shape.setPosition(pos);
+}
+
+template<typename sfShapeType, typename BodyType>
+void Shape<sfShapeType, BodyType>::setColor(const sf::Color& color)
+{
+    m_shape.setFillColor(color);
+}
+
+template<typename sfShapeType, typename BodyType>
+sf::Color Shape<sfShapeType, BodyType>::getColor()
+{
+    return m_shape.getFillColor();
 }
 
 template<typename sfShapeType, typename BodyType>
