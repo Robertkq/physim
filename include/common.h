@@ -1,9 +1,6 @@
 #ifndef PHYSIM_COMMON_H
 #define PHYSIM_COMMON_H
 
-#define SCREEN_WIDTH 1920
-#define SCREEN_LENGTH 1080
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -16,8 +13,16 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
+
+
 namespace kq
 {
+
+constexpr uint16_t SCREEN_WIDTH = 1920;
+constexpr uint16_t SCREEN_LENGTH = 1080;
+constexpr float SCREEN_WIDTH_F = 1920.f;
+constexpr float SCREEN_LENGTH_F = 1080.f;
+constexpr float pi = 3.14159265f;
 
 inline std::string itos(int conv)
 {
@@ -42,11 +47,11 @@ inline std::string itos(int conv)
 
     enum class objectType : int
     {
-        circle = 0,
-        square = 1,
-        rectangle = 2,
-        triangle = 3,
-        convex = 4
+        Circle = 0,
+        Square = 1,
+        Rectangle = 2,
+        Triangle = 3,
+        Convex = 4
     };
 }
 

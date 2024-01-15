@@ -5,6 +5,7 @@
 #include "types.h"
 #include "uimanager.h"
 #include "collider.h"
+#include "fileManager.h"
 
 namespace kq
 {
@@ -16,13 +17,22 @@ public:
     ~physim();
     
     void run();
+    const std::vector<physicalObject*>& getEntities() const;
+    std::vector<physicalObject*>& getEntities();
+    fileManager& getFileManager();
+    void clearEntities();
+    void Impulse();
+    void createObject(objectType type, float rotation, float radius, sf::Vector2f size,
+                 sf::Vector2f velocity, std::array<float, 4> colors, float mass);
 
 private:
     void drawObjects();
     void updateObjects(float deltaTime);
     void mainMenu();
 
-    void createObject(objectType type, float rotation, float m_radius, sf::Vector2f m_size, sf::Vector2f m_velocity);
+    
+
+    
 
     uint16_t m_width;
     uint16_t m_height;
@@ -30,7 +40,8 @@ private:
 
     UIManager m_UIManager;
 
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::vector<physicalObject*> m_entities;
+    fileManager m_fileManager;
 };
 
 } // namespace kq
