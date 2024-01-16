@@ -85,8 +85,6 @@ bool fileManager::loadcsv(const std::string& filename, std::vector<physicalObjec
             parent->createObject(type, {}, radius, size, velocity, color, mass);
             parent->getEntities().back()->getPosition() = position;
 
-            // Now you can use these variables to create a physicalObject instance
-            // ...
         }
         file.close();
     } else {

@@ -122,10 +122,8 @@ void UIManager::editPanel()
 
     }
 
-    // Initialize color as an array of 4 floats (RGBA), with initial white color
     static float colorInternal[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-    // Create a color picker
     ImGui::ColorPicker4("ColorPicker", colorInternal, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHex);
     m_color[0] = colorInternal[0];
     m_color[1] = colorInternal[1];
@@ -208,7 +206,6 @@ void UIManager::objectPanel()
     ImGui::Text("Color: "); ImGui::SameLine(); getColorBox(m_parent->getEntities()[m_selected]->getColor());
     ImGui::Text("Mass: %.2f", m_parent->getEntities()[m_selected]->getMass());
 
-    // Assuming position and velocity are sf::Vector2f
     sf::Vector2f position = m_parent->getEntities()[m_selected]->getPosition();
     sf::Vector2f velocity = m_parent->getEntities()[m_selected]->getVelocity();
 

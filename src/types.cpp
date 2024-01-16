@@ -104,21 +104,20 @@ Circle::Circle(physicalObjectArgs&& args, float radius)
 void Circle::move(const sf::Vector2f& offset, float deltaTime)  
 {
 	m_position += offset * deltaTime;
-	// Check if the new position is outside the screen
     if (m_position.x - m_radius < 0) {
         m_position.x = m_radius;
-        m_velocity.x *= -1; // Reverse the x velocity to make the circle bounce
+        m_velocity.x *= -1; 
     } else if (m_position.x + m_radius > SCREEN_WIDTH_F) {
         m_position.x = SCREEN_WIDTH_F - m_radius;
-        m_velocity.x *= -1; // Reverse the x velocity to make the circle bounce
+        m_velocity.x *= -1; 
     }
 
     if (m_position.y - m_radius < 0) {
         m_position.y = m_radius;
-        m_velocity.y *= -1; // Reverse the y velocity to make the circle bounce
+        m_velocity.y *= -1; 
     } else if (m_position.y + m_radius > SCREEN_LENGTH_F) {
         m_position.y = SCREEN_LENGTH_F - m_radius;
-        m_velocity.y *= -1; // Reverse the y velocity to make the circle bounce
+        m_velocity.y *= -1; 
     }
 }
 
@@ -186,63 +185,52 @@ bool Circle::collidesWith(const Circle& other) const
 
 bool Circle::collidesWith(const Square& other) const 
 {
-    // Get the four corners of the square
     std::array<sf::Vector2f, 4> corners = other.getVertices();
 
-    // Check each corner to see if it's inside the circle
     for (const auto& corner : corners) 
     {
         if (containsPoint(corner))
         {
-            return true;  // The corner is inside the circle, so there's a collision
+            return true;  
         }
     }
-
-    // If none of the corners are inside the circle, there's no collision
     return false;
 }
 
 bool Circle::collidesWith(const Triangle& other) const
 {
-	// Iterate over the vertices of the triangle
+	
     for (const auto& vertex : other.getVertices())
     {
-        // Check if the circle contains the vertex
         if (containsPoint(vertex))
         {
-            return true;  // The vertex is inside the circle, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices are inside the circle, there's no collision
     return false;
 }
 
 bool Circle::collidesWith(const Rectangle& other) const 
 {
-    // Get the vertices of the rectangle
     auto vertices = other.getVertices();
 
-    // Check if any vertex of the rectangle is inside this circle
     for (const auto& vertex : vertices)
     {
         if (containsPoint(vertex))
         {
-            return true;  // The vertex is inside this circle, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices are inside this circle, there's no collision
     return false;
 }
 
 bool Circle::containsPoint(sf::Vector2f point) const
 {
-    // Calculate the distance between the point and the center of the circle
     float distanceX = m_position.x - point.x;
     float distanceY = m_position.y - point.y;
 
-    // If the distance is less than the circle's radius, the point is inside the circle
     return (distanceX * distanceX + distanceY * distanceY) <= (m_radius * m_radius);
 }
 
@@ -265,25 +253,22 @@ Square::Square(physicalObjectArgs&& args, float sideLength)
 void Square::move(const sf::Vector2f& offset, float deltaTime) 
 {
 	m_position += offset * deltaTime;
-	// Update position based on velocity.
-
-	// check position to not be out of screen
 	float halfSideLength = m_sideLength / 2;
 
 	if (m_position.x - halfSideLength < 0) {
 		m_position.x = halfSideLength;
-		m_velocity.x *= -1; // Reverse the x velocity to make the square bounce
+		m_velocity.x *= -1; 
 	} else if (m_position.x + halfSideLength > SCREEN_WIDTH_F) {
 		m_position.x = SCREEN_WIDTH_F - halfSideLength;
-		m_velocity.x *= -1; // Reverse the x velocity to make the square bounce
+		m_velocity.x *= -1; 
 	}
 
 	if (m_position.y - halfSideLength < 0) {
 		m_position.y = halfSideLength;
-		m_velocity.y *= -1; // Reverse the y velocity to make the square bounce
+		m_velocity.y *= -1; 
 	} else if (m_position.y + halfSideLength > SCREEN_LENGTH_F) {
 		m_position.y = SCREEN_LENGTH_F - halfSideLength;
-		m_velocity.y *= -1; // Reverse the y velocity to make the square bounce
+		m_velocity.y *= -1; 
 	}
 }
 
@@ -294,7 +279,6 @@ void Square::applyForce(const sf::Vector2f& force)
 
 void Square::update(float deltaTime) 
 {
-	// Update position based on velocity.
 	deltaTime *= m_timeAcceleration;
 	applyGravity(deltaTime);
 	applyAirResistance(deltaTime);
@@ -350,11 +334,11 @@ bool Square::collidesWith(const Circle& other) const
 
 bool Square::collidesWith(const Square& other) const
 {
-	// Check if the squares overlap on the x-axis.
+	
 	if (other.getPosition().x < m_position.x && m_position.x < other.getPosition().x + other.getSideLength() ||
 		other.getPosition().x < m_position.x + m_sideLength && m_position.x + m_sideLength < other.getPosition().x + other.getSideLength()) 
 	{
-		// Check if the squares overlap on the y-axis.
+		
 		if (other.getPosition().y < m_position.y && m_position.y < other.getPosition().y + other.getSideLength() ||
 			other.getPosition().y < m_position.y + m_sideLength && m_position.y + m_sideLength < other.getPosition().y + other.getSideLength()) 
 		{
@@ -367,35 +351,31 @@ bool Square::collidesWith(const Square& other) const
 
 bool Square::collidesWith(const Triangle& other) const 
 {
-    // Iterate over the vertices of the triangle
+    
     for (const auto& vertex : other.getVertices())
     {
-        // Check if the square contains the vertex
         if (containsPoint(vertex))
         {
-            return true;  // The vertex is inside the square, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices are inside the square, there's no collision
     return false;
 }
 
 bool Square::collidesWith(const Rectangle& other) const
 {
-    // Get the vertices of the square
     auto vertices = getVertices();
 
-    // Check if any vertex of the square is inside the rectangle
     for (const auto& vertex : vertices)
     {
         if (other.containsPoint(vertex))
         {
-            return true;  // The vertex is inside the rectangle, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices of the square are inside the rectangle, there's no collision
+    
     return false;
 }
 
@@ -414,17 +394,14 @@ std::array<sf::Vector2f, 4> Square::getVertices() const
 
 bool Square::containsPoint(sf::Vector2f point) const
 {
-	// Calculate the half size of the square
     float halfSize = m_sideLength / 2.0f;
 
-    // Check if the point is within the boundaries of the square
     if (point.x >= (m_position.x - halfSize) && point.x <= (m_position.x + halfSize) &&
         point.y >= (m_position.y - halfSize) && point.y <= (m_position.y + halfSize))
     {
-        return true;  // The point is inside the square
+        return true;
     }
 
-    // The point is outside the square
     return false;
 }
 
@@ -551,37 +528,31 @@ bool Triangle::collidesWith(const Square& other) const
 
 bool Triangle::collidesWith(const Triangle& other) const 
 {
-    // Get the vertices of the other triangle
     auto otherVertices = other.getVertices();
 
-    // Check if any vertex of the other triangle is inside this triangle
     for (const auto& vertex : otherVertices)
     {
         if (containsPoint(vertex))
         {
-            return true;  // The vertex is inside this triangle, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices are inside this triangle, there's no collision
     return false;
 }
 
 bool Triangle::collidesWith(const Rectangle& other) const
 {
-    // Get the vertices of the triangle
     auto vertices = getVertices();
 
-    // Check if any vertex of the triangle is inside the rectangle
     for (const auto& vertex : vertices)
     {
         if (other.containsPoint(vertex))
         {
-            return true;  // The vertex is inside the rectangle, so there's a collision
+            return true;  
         }
     }
 
-    // If none of the vertices of the triangle are inside the rectangle, there's no collision
     return false;
 }
 
@@ -632,7 +603,6 @@ void Rectangle::move(const sf::Vector2f& offset, float deltaTime)
     float halfWidth = m_width / 2.0f;
     float halfHeight = m_height / 2.0f;
 
-    // Check if the rectangle is out of the map and handle collision
     if (m_position.x - halfWidth < 0)
     {
         m_position.x = halfWidth;
@@ -724,15 +694,12 @@ bool Rectangle::collidesWith(const Triangle& other) const
 
 bool Rectangle::collidesWith(const Rectangle& other) const
 {
-    // Get the vertices of the other rectangle
     auto otherVertices = other.getVertices();
-
-    // Check if any vertex of the other rectangle is inside this rectangle
     for (const auto& vertex : otherVertices)
     {
         if (containsPoint(vertex))
         {
-            return true;  // The vertex is inside this rectangle, so there's a collision
+            return true;  
         }
     }
 
